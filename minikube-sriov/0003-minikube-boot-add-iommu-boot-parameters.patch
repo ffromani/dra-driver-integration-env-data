@@ -1,0 +1,26 @@
+From 2cf8c4b858dafc32d3cfa3755a17bede70c38e12 Mon Sep 17 00:00:00 2001
+From: Francesco Romani <fromani@redhat.com>
+Date: Thu, 12 Feb 2026 21:41:44 +0100
+Subject: [PATCH 3/3] minikube: boot: add iommu boot parameters
+
+these parameters are needed to ensure SRIOV works
+as good as possible.
+
+Signed-off-by: Francesco Romani <fromani@redhat.com>
+---
+ deploy/iso/minikube-iso/board/minikube/x86_64/isolinux.cfg | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/deploy/iso/minikube-iso/board/minikube/x86_64/isolinux.cfg b/deploy/iso/minikube-iso/board/minikube/x86_64/isolinux.cfg
+index 9857e0bb2..267199e2f 100644
+--- a/deploy/iso/minikube-iso/board/minikube/x86_64/isolinux.cfg
++++ b/deploy/iso/minikube-iso/board/minikube/x86_64/isolinux.cfg
+@@ -2,4 +2,4 @@ default 1
+ label 1
+       kernel /boot/bzImage
+       initrd /boot/initrd
+-      append root=/dev/sr0 loglevel=3 console=ttyS0 noembed nomodeset norestore waitusb=10 random.trust_cpu=on hw_rng_model=virtio systemd.legacy_systemd_cgroup_controller=yes
++      append root=/dev/sr0 loglevel=3 console=ttyS0 noembed nomodeset norestore waitusb=10 random.trust_cpu=on hw_rng_model=virtio systemd.legacy_systemd_cgroup_controller=yes pci=realloc iommu=pt intel_iommu=on amd_iommu=on
+-- 
+2.53.0
+

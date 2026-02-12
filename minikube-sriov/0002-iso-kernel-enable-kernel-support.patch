@@ -1,0 +1,86 @@
+From 560e544134293c085010b48852f9a75a8fa67def Mon Sep 17 00:00:00 2001
+From: Francesco Romani <fromani@redhat.com>
+Date: Thu, 12 Feb 2026 21:39:54 +0100
+Subject: [PATCH 2/3] iso: kernel: enable kernel support
+
+we minimum we need:
+- the IGB driver
+- IOMMU support for intel/amd
+- PCI IOV support
+- VFIO support
+
+we add a bunch of extra drivers in the mix, plus hotplug support
+which may turn handy to attach devices dynamically in the future
+
+Signed-off-by: Francesco Romani <fromani@redhat.com>
+---
+ .../minikube/x86_64/linux_x86_64_defconfig    | 29 +++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+diff --git a/deploy/iso/minikube-iso/board/minikube/x86_64/linux_x86_64_defconfig b/deploy/iso/minikube-iso/board/minikube/x86_64/linux_x86_64_defconfig
+index 4f244d3e5..ba4b80cf4 100644
+--- a/deploy/iso/minikube-iso/board/minikube/x86_64/linux_x86_64_defconfig
++++ b/deploy/iso/minikube-iso/board/minikube/x86_64/linux_x86_64_defconfig
+@@ -294,6 +294,10 @@ CONFIG_NET_9P_VIRTIO=m
+ CONFIG_CEPH_LIB=y
+ CONFIG_PCI=y
+ CONFIG_PCIEPORTBUS=y
++CONFIG_HOTPLUG_PCI_PCIE=y
++CONFIG_PCIEAER=y
++CONFIG_PCI_REALLOC_ENABLE_AUTO=y
++CONFIG_PCI_IOV=y
+ CONFIG_HOTPLUG_PCI=y
+ CONFIG_PCCARD=y
+ CONFIG_YENTA=y
+@@ -367,7 +371,24 @@ CONFIG_NET_TULIP=y
+ CONFIG_E100=y
+ CONFIG_E1000=y
+ CONFIG_E1000E=y
++CONFIG_IGB=m
++CONFIG_IGBVF=m
++CONFIG_IXGBE=m
++CONFIG_IXGBEVF=m
++CONFIG_I40E=m
++CONFIG_I40EVF=m
++CONFIG_ICE=m
++CONFIG_FM10K=m
++CONFIG_IGC=m
++CONFIG_SKGE=m
+ CONFIG_SKY2=y
++CONFIG_MLX4_EN=m
++CONFIG_MLX5_CORE=m
++CONFIG_MLX5_FPGA=y
++CONFIG_MLX5_CORE_EN=y
++CONFIG_MLX5_CORE_IPOIB=y
++CONFIG_MLX5_SF=y
++CONFIG_MLXSW_CORE=m
+ CONFIG_FORCEDETH=y
+ CONFIG_8139CP=y
+ CONFIG_8139TOO=y
+@@ -437,6 +458,9 @@ CONFIG_USB_STORAGE=y
+ CONFIG_RTC_CLASS=y
+ # CONFIG_RTC_HCTOSYS is not set
+ CONFIG_DMADEVICES=y
++CONFIG_VFIO=m
++CONFIG_VFIO_PCI=m
++CONFIG_MLX5_VFIO_PCI=m
+ CONFIG_VIRT_DRIVERS=y
+ CONFIG_VBOXGUEST=m
+ CONFIG_VIRTIO_PCI=y
+@@ -447,8 +471,13 @@ CONFIG_HYPERV_UTILS=m
+ CONFIG_HYPERV_BALLOON=m
+ CONFIG_EEEPC_LAPTOP=y
+ CONFIG_AMD_IOMMU=y
++CONFIG_AMD_IOMMU_V2=m
+ CONFIG_INTEL_IOMMU=y
++CONFIG_INTEL_IOMMU_SVM=y
+ # CONFIG_INTEL_IOMMU_DEFAULT_ON is not set
++CONFIG_IOMMUFD=m
++CONFIG_IRQ_REMAP=y
++CONFIG_VIRTIO_IOMMU=m
+ CONFIG_EXT4_FS=y
+ CONFIG_EXT4_FS_POSIX_ACL=y
+ CONFIG_EXT4_FS_SECURITY=y
+-- 
+2.53.0
+
